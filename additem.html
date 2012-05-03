@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--Nathan Baker, Project Week 1, Visual Frameworks, Term 5/2012-->
+<html>
+	<head>
+		<!--Meta Tags-->
+		<meta charset="UTF-8" />
+		<meta keywords="Disc Golf, Course Review, Ratings" />
+		<meta description="An app for review disc golf courses." />
+		<meta name="robots" content="index, follow" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<!--App Title-->
+    	<title>Add Course Review</title>
+	</head>
+	<body>
+		<header>
+		<!--My app name-->
+			<h1>Disc Golf Course Review</h1>
+		<header/>
+		<!--Form-->
+		<!--Input fields: Text, Range, Checkbox, Date, Submit, Hidden-->
+		<form action="#" method="post">
+			<fieldset>
+				<legend>Course Information</legend>
+				<ul>
+					<!--Input fields for text-->
+					<li><label for="cname">Course Name: </label><input type="text" id="cname"/></li>
+					<li><label for="location">Location: </label><input type="text" id="location"/></li>
+					<li><label for="totalholes">Total Holes: </label><input type="text" id="totalholes"/></li>
+					<li><label for="rname">Reviewer Name: </label><input type="text" id="rname"/></li>
+					<li><label for="reviewdate">Review Date: </label><input type="date" id="reviewdate" /></li>
+					<!--Select drop down with 3 options-->
+					<li>Scored as: <select>
+									<option value="Par 3">Par 3</option>
+									<option value="Par 4">Par 4</option>
+									<option value="Par 5">Par 5</option>
+								</select>
+					</li>
+				</ul>
+			</fieldset>
+			<fieldset>
+				<legend>Course Review</legend>
+					<ul>
+						<!--Radio and Checkboxes-->
+						<li>Target type:
+							<ul>
+								<li><input type="radio" checked value="Baskets" id="baskets" name="targets" /><label for="baskets">Baskets</label></li>
+								<li><input type="radio" value="Tones" id="tones" name="targets" /><label for="tones">Tone Poles</label></li>
+								<li><input type="radio" value="Objects" id="objects" name="targets" /><label for="objects">Objects</label></li>
+								<li><input type="radio" value="Mixed" id="mixed" name="targets" /><label for="mixed">Mixed Target Types</label></li>
+							</ul>
+						</li>		
+						<li>Facilities Available:
+							<ul>
+								<li><input type="checkbox" value="Restrooms" id="restrooms" /><label for="restrooms">Restrooms</label></li>
+								<li><input type="checkbox" value="Showers" id="showers" /><label for="showers">Showers</label></li>
+								<li><input type="checkbox" value="Parking Fee" id="parkingfee" /><label for="parkingfee">Parking Fee</label></li>
+								<li><input type="checkbox" value="Handicap Accessible" id="handicap" /><label for="handicap">Handicap Accessible</label></li>
+								<li><input type="checkbox" value="Camping" id="camping" /><label for="camping">Camping</label></li>
+							</ul>
+						</li>		
+						<li>Your Course Rating:
+							<ul>
+								<!--Range Slider-->
+								<li><input type="range" name="rating" id="courseRating" min="1" max="10" /><label for="courseRating">Rate from 1-10</label></li>
+							</ul>
+						</li>		
+					</ul>
+					<!--Text Area for comments-->
+					<label for="comments">Comments:</label>
+					<textarea name="comments" col="" rows="">Write extra comments here.</textarea>
+			</fieldset>
+			<!--Hidden field-->
+			<li><input type="hidden" value="true" /></li>
+			<!--Submit form-->
+			<input type="submit" value="Submit Review" />
+		</form>
+		<!--Clear Stored Data and Display data link set to #-->
+		<a href="#"> Clear Data </a> -- <a href="#"> Display Data </a>
+	</body>
+</html>
