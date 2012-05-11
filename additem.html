@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!--Nathan Baker, Project Week 1, Visual Frameworks, Term 5/2012-->
+<!--Nathan Baker, Project Week 2, Visual Frameworks, Term 5/2012-->
 <html>
 	<head>
 		<!--Meta Tags-->
 		<meta charset="UTF-8" />
-		<meta keywords="Disc Golf, Course Review, Ratings" />
-		<meta description="An app for review disc golf courses." />
+		<meta name="keywords" content="Disc Golf, Course Review, Ratings" />
+		<meta name="description" content="An app for review disc golf courses." />
 		<meta name="robots" content="index, follow" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<!--App Title-->
@@ -15,10 +15,10 @@
 		<header>
 		<!--My app name-->
 			<h1>Disc Golf Course Review</h1>
-		<header/>
+		</header>
 		<!--Form-->
 		<!--Input fields: Text, Range, Checkbox, Date, Submit, Hidden-->
-		<form action="#" method="post">
+		<form action="#" method="post" id="courseReview">
 			<fieldset>
 				<legend>Course Information</legend>
 				<ul>
@@ -29,12 +29,7 @@
 					<li><label for="rname">Reviewer Name: </label><input type="text" id="rname"/></li>
 					<li><label for="reviewdate">Review Date: </label><input type="date" id="reviewdate" /></li>
 					<!--Select drop down with 3 options-->
-					<li>Scored as: <select>
-									<option value="Par 3">Par 3</option>
-									<option value="Par 4">Par 4</option>
-									<option value="Par 5">Par 5</option>
-								</select>
-					</li>
+					<li id="select"><label for="selectpar">Select Par:</label></li>
 				</ul>
 			</fieldset>
 			<fieldset>
@@ -67,14 +62,17 @@
 					</ul>
 					<!--Text Area for comments-->
 					<label for="comments">Comments:</label>
-					<textarea name="comments" col="" rows="">Write extra comments here.</textarea>
+					<textarea name="comments" id="comments">Write extra comments here.</textarea>
 			</fieldset>
 			<!--Hidden field-->
+			<ul>
 			<li><input type="hidden" value="true" /></li>
+			</ul>
 			<!--Submit form-->
-			<input type="submit" value="Submit Review" />
+			<input type="submit" value="Submit Review" id="submit"/>
 		</form>
 		<!--Clear Stored Data and Display data link set to #-->
-		<a href="#"> Clear Data </a> -- <a href="#"> Display Data </a>
+		<a href="#" id="clearLink"> Clear Data </a> -- <a href="#" id="displayLink"> Display Data </a> -- <a href="additem.html" id="addNew" style="display:none;">Add New Review</a>
+		<script src="js/main.js" type="text/javascript"></script>
 	</body>
 </html>
