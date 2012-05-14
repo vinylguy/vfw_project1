@@ -1,0 +1,88 @@
+/*
+Nathan Baker
+Project 2
+Visual FrameWorks
+05/2012 term
+*/
+
+h1 {
+	border: 1px solid #A64E00;
+	border-radius: 25px;
+	color: #015C65;
+	padding: 3px;
+	text-align: center;
+	background-color: #FFB573;
+	box-shadow: 3px 3px 3px #A64E00;
+	font: bold 28px Arial;
+}
+
+#clearLink {
+	appearance:button ;
+	-moz-appearance:button ;
+	-webkit-appearance:button ;
+	margin: 5px;
+	box-shadow: 3px 3px 3px #A64E00;
+}
+
+label {
+	display: block;
+	text-align: left;
+	font: bold 14px Arial;
+}
+
+fieldset {
+	padding: 10px;
+	background-color: #FFC140;
+	margin: 10px;
+	font: bold italic 18px Arial;
+	box-shadow: 3px 3px 3px #A64E00
+}
+
+#displayLink {
+	appearance:button ;
+	-moz-appearance:button ;
+	-webkit-appearance:button ;
+	margin: 5px;
+	box-shadow: 3px 3px 3px #A64E00;
+}
+
+#addNew {
+	appearance:button ;
+	-moz-appearance:button ;
+	-webkit-appearance:button ;
+	margin: 5px;
+	box-shadow: 3px 3px 3px #A64E00;
+}
+
+body {
+	background-color: #FF9A40;
+}
+
+li {
+	margin: 8px;
+	list-style-type: none;
+}
+
+a {
+	color: #133CAC;
+}
+
+input:focus {
+	background-color: #FFC140;
+}
+
+input:hover {
+	background-color: #FFD273;
+}
+
+a:hover {
+	color: #476DD5;
+}
+
+a:visited {
+	color: #OOC618;
+}
+
+a:link {
+	color: #133CAC;
+}

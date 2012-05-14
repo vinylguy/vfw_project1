@@ -36,10 +36,14 @@ window.addEventListener("DOMContentLoaded", function(){
 		}
 	}
 
-	//Im unsure how to add for multiple check box items.	
-	/*function getCheckBoxValue(){
-		if($().checked)
-	};*/
+	//Checkbox Function	
+	function getCheckBoxValue(){
+		if($("favorite").checked){
+			favoriteValue = $("favorite").value;
+		}else{
+			favoriteValue = "No"
+		}
+	};
 
 	//Toggle controls.
 	function toggleControls(n){
@@ -67,6 +71,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		var id 					= Math.floor(Math.random()*10000001);
 		//Pull form field values and store inside an object.
 		getSelectedRadio();
+		getCheckBoxValue();
 		var item 				= {};
 			item.select	 		= ["Par:", $("select").value];
 			item.cname 			= ["Course Name:", $("cname").value];
@@ -75,6 +80,7 @@ window.addEventListener("DOMContentLoaded", function(){
 			item.rname			= ["Reviewer Name:", $("rname").value];
 			item.reviewdate		= ["Review Date:", $("reviewdate").value];
 			item.targets 		= ["Target Type:", targetsValue];
+			item.favorite		= ["Is a Favorite:", favoriteValue];
 			item.courseRating 	= ["Course Rating:", $("courseRating").value];
 			item.comments		= ["Comments:", $("comments").value];
 		//Save data into local storage.
@@ -123,6 +129,7 @@ window.addEventListener("DOMContentLoaded", function(){
 
 	var parScore = ["--Choose Par--", "Par 3", "Par 4", "Par 5"],
 		targetsValue
+		favoriteValue = "No"
 	;
 		
 	makePar();
