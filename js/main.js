@@ -1,6 +1,6 @@
 // Nathan Baker
-// Project 2
-// VFW - Term 04/2012
+// Activity 3
+// VFW - Term 05/2012
 
 //Wait until the DOM is loaded.
 window.addEventListener("DOMContentLoaded", function(){
@@ -55,8 +55,8 @@ window.addEventListener("DOMContentLoaded", function(){
 				$("addNew").style.display = "inline";
 				break;
 			case "off":
-				$("contactForm").style.display = "block";
-				$("clear").style.display = "inline";
+				$("courseReview").style.display = "block";
+				$("clearLink").style.display = "inline";
 				$("displayLink").style.display = "inline";
 				$("addNew").style.display = "none";
 				$("items").style.display = "none";
@@ -67,8 +67,13 @@ window.addEventListener("DOMContentLoaded", function(){
 	}
 	
 	//Store Data
-	function storeData(){
-		var id 					= Math.floor(Math.random()*10000001);
+	function storeData(key){
+		if(!key){
+			var id 					= Math.floor(Math.random()*10000001);
+		}else{
+			id = key;
+		}
+
 		//Pull form field values and store inside an object.
 		getSelectedRadio();
 		getCheckBoxValue();
@@ -101,6 +106,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		$("items").style.display = "block";
 		for(var i=0, len=localStorage.length; i<len; i++){
 			var makeli = document.createElement("li");
+			var linksLi = document.createElement("li")
 			makeList.appendChild(makeli);
 			var key = localStorage.key(i);
 			var value = localStorage.getItem(key);
@@ -112,10 +118,89 @@ window.addEventListener("DOMContentLoaded", function(){
 				makeSubList.appendChild(makeSubli);
 				var optSubText = obj[n][0]+" "+obj[n][1];
 				makeSubli.innerHTML = optSubText;
+				makeSubList.appendChild(linksLi);
 			}
+			makeItemLinks(localStorage.key(i), linksLi); //create edit and delete buttons
 		}
 	}
 	
+	//Make item Links
+	function makeItemLinks(key, linksLi) {
+		//add Edit item link
+		var editLink = document.createElement("a");
+		editLink.href = "#";
+		editLink.key = key;
+		var editText = "Edit Review";
+		editLink.addEventListener("click", editItem);
+		editLink.innerHTML = editText;
+		linksLi.appendChild(editLink);
+		
+		var breakTag = document.createElement("br");
+		linksLi.appendChild(breakTag);
+		
+		//add delete item link
+		var deleteLink = document.createElement("a");
+		deleteLink.href = "#";
+		deleteLink.key = key;
+		var deleteText = "Delete Review";
+		deleteLink.addEventListener("click", deleteItem);
+		deleteLink.innerHTML = deleteText;
+		linksLi.appendChild(deleteLink);
+	};
+	
+	function editItem(){
+		//get data from local storage
+		var value = localStorage.getItem(this.key);
+		var item = JSON.parse(value);
+		
+		//Show form
+		toggleControls("off");
+		
+		$("select").value = item.select[1];
+		$("cname").value = item.cname[1];
+		$("location").value = item.location[1];
+		$("totalholes").value = item.totalholes[1];
+		$("rname").value = item.rname[1];
+		$("reviewdate").value = item.reviewdate[1];
+		var radios = document.forms[0].targets;
+			for(var i=0; i<radios.length; i++){
+				if(radios[i].value == "baskets" && item.targets[1] == "baskets"){
+					radios[i].setAttribute("checked", "checked");
+				}else if(radios[i].value == "tones" && item.targets[1] == "tones"){
+					radios[i].setAttribute("checked", "checked");
+				}else if(radios[i].value == "objects" && item.targets[1] == "objects"){
+					radios[i].setAttribute("checked", "checked");
+				}else if(radios[i].value == "mixed" && item.targets[1] == "mixed"){
+					radios[i].setAttribute("checked", "checked");
+				}
+			}
+			if(item.favorite[1] == "Yes"){
+				$("fav").setAttribute("checked", "checked");
+			}
+		$("courseRating").value = item.courseRating[1];
+		$("comments").value = item.comments[1];
+		
+		//remove initial listener from save contact button
+		save.removeEventListener("click", storeData);
+		//change submit button value to say edit
+		$("submit").value = "Edit Contact";
+		var editSubmit = $("submit");
+		//save the key value of the editSubmit event
+		editSubmit.addEventListener("click", validate);
+		editSubmit.key = this.key;
+	};
+		
+	function deleteItem(){
+		var ask = confirm("Are you sure you want to delete this review?");
+			if(ask){
+				localStorage.removeItem(this.key);
+				alert("Review was deleted.");
+				window.location.reload();
+			}else{
+				alert("Review was NOT deleted.");
+			}
+	};	
+		
 	function clearLocal(){
 		if(localStorage.length === 0){
 			alert("There is no data to clear.");
@@ -126,10 +211,69 @@ window.addEventListener("DOMContentLoaded", function(){
 			return false;		
 		}
 	}
+	
+	function validate(e){
+		//define elements to check
+		var getSelect  = $("select");
+		var getCname  = $("cname");
+		var getRname  = $("rname");	 
+		
+		//reset error message
+		errMsg.innerHTML = "";
+			getSelect.style.border = "1px solid black";
+			getRname.style.border = "1px solid black";
+			getCname.style.border = "1px solid black";
+			
+		//get error messages
+		var messageArray = [];
+		//select validation for par
+		if(getSelect.value === "--Choose Par--"){
+			var selectError = "Please choose a par.";
+			getSelect.style.border = "1px solid red";
+			messageArray.push(selectError);
+		}
+		
+		//Reviewer name validation
+		if(getRname.value === ""){
+			var rNameError = "Please enter a Reviewer name.";
+			getRname.style.border = "1px solid red";
+			messageArray.pus(rNameError);
+		}
+		
+		//course name validation
+		if(getCname.value === ""){
+			var cNameError = "Please enter a Course name.";
+			getCname.style.border = "1px solid red";
+			messageArray.pus(cNameError);
+		}
+		
+		//reg exp, didn't have an email field for this.
+		/*var regExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		if(!(regExp.exec(getEmail.value))){
+			var emailError = "Please enter a valid email address.";
+			getEmail.style.border = "1px solid red";
+			messageArray.push(emailError);
+		}*/
+		
+		//if errors are present display on screen
+		if(messageArray.length >= 1){
+			for(var i=0, j=messageArray.length; i < j; i++){
+				var txt = document.createElement("li");
+				txt.innerHTML = messageArray[i];
+				errMsg.appendChild(txt);
+			}
+			e.preventDefault();
+			return false;
+		}else{
+			//If valid, save data
+			storeData(this.key);
+		}	
+	}
 
 	var parScore = ["--Choose Par--", "Par 3", "Par 4", "Par 5"],
 		targetsValue
 		favoriteValue = "No"
+		errMsg = $("errors");
 	;
 		
 	makePar();
@@ -140,7 +284,7 @@ window.addEventListener("DOMContentLoaded", function(){
 	var clearLink = $("clearLink");
 	clearLink.addEventListener("click", clearLocal);
 	var save = $("submit");
-	save.addEventListener("click", storeData);
+	save.addEventListener("click", validate);
 
 
 });
