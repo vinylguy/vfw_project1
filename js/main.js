@@ -3,15 +3,30 @@
 // VFW - Term 05/2012
 
 //Wait until the DOM is loaded.
-window.addEventListener("DOMContentLoaded", function(){
+window.addEventListener("DOMContentLoaded", function () {
 
-	function $(x){
+	function $(x) {
 		var theElement = document.getElementById(x);
 		return theElement;
 	}
 
+	//trying to get dynamic display on the range slider
+	/*function initSlider(){
+		//get range input
+		var myRange = $("myRange");
+		myRange.addEventListener("change", function(){showOutput(myRange, "rangeOutput")}, false);
+		$("rangeOutput").innerHTML = rangeOutput.value;
+		
+		//call range input
+		showOutput(myRange, "rangeOutput");
+		
+		function showOutput(slider, field){
+			$(field).innerHTML = slider.value;
+		}
+	}*/
+
 	//Select field element
-	function makePar(){
+	function makePar () {
 		var formTag = document.getElementsByTagName("form"),
 			selectLi = $("select"),
 			makeSelect = document.createElement("select");
@@ -29,7 +44,7 @@ window.addEventListener("DOMContentLoaded", function(){
 	//Find value of radio button
 	function getSelectedRadio(){
 		var radios = document.forms[0].targets
-		for(var i=0; i<radios.length; i++){
+		for (var i=0; i<radios.length; i++){
 			if(radios[i].checked){
 				targetsValue = radios[i].value;
 			}
@@ -78,7 +93,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		getSelectedRadio();
 		getCheckBoxValue();
 		var item 				= {};
-			item.select	 		= ["Par:", $("select").value];
+			item.select	 		= ["Par:", $("par").value];
 			item.cname 			= ["Course Name:", $("cname").value];
 			item.location		= ["Location:", $("location").value];
 			item.totalholes 	= ["Total Holes:", $("totalholes").value];
@@ -92,11 +107,12 @@ window.addEventListener("DOMContentLoaded", function(){
 		localStorage.setItem(id, JSON.stringify(item));
 		alert("Review Submitted");
 	};
-
+	
 	function getData(){
 		toggleControls("on");
 		if(localStorage.length === 0){
-			alert("There is no data in local storage.");
+			alert("There is no data in local storage, so default data was added.");
+			autoFillData();
 		}
 		var makeDiv = document.createElement("div");
 		makeDiv.setAttribute("id", "items");
@@ -113,6 +129,7 @@ window.addEventListener("DOMContentLoaded", function(){
 			var obj = JSON.parse(value);
 			var makeSubList = document.createElement("ul");
 			makeli.appendChild(makeSubList);
+			getImage(obj.select[1], makeSubList);
 			for(var n in obj){
 				var makeSubli = document.createElement("li");
 				makeSubList.appendChild(makeSubli);
@@ -122,6 +139,15 @@ window.addEventListener("DOMContentLoaded", function(){
 			}
 			makeItemLinks(localStorage.key(i), linksLi); //create edit and delete buttons
 		}
+	}
+	
+	//Get the image for the Par
+	function getImage(parName, makeSubList){
+		var imageLi = document.createElement("li");
+		makeSubList.appendChild(imageLi);
+		var newImage = document.createElement("img");
+		var setSrc = newImage.setAttribute("src", "images/"+ parName + ".png");
+		imageLi.appendChild(newImage);
 	}
 	
 	//Make item Links
@@ -148,6 +174,14 @@ window.addEventListener("DOMContentLoaded", function(){
 		linksLi.appendChild(deleteLink);
 	};
 	
+	//Auto Fill data when empty
+	function autoFillData () {
+		for (var n in json){
+			var id = Math.floor(Math.random()*10000001);
+			localStorage.setItem(id, JSON.stringify(json[n]));
+		}
+	}
+	
 	function editItem(){
 		//get data from local storage
 		var value = localStorage.getItem(this.key);
@@ -156,7 +190,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		//Show form
 		toggleControls("off");
 		
-		$("select").value = item.select[1];
+		$("par").value = item.select[1];
 		$("cname").value = item.cname[1];
 		$("location").value = item.location[1];
 		$("totalholes").value = item.totalholes[1];
@@ -164,18 +198,18 @@ window.addEventListener("DOMContentLoaded", function(){
 		$("reviewdate").value = item.reviewdate[1];
 		var radios = document.forms[0].targets;
 			for(var i=0; i<radios.length; i++){
-				if(radios[i].value == "baskets" && item.targets[1] == "baskets"){
+				if(radios[i].value == "Baskets" && item.targets[1] == "Baskets"){
 					radios[i].setAttribute("checked", "checked");
-				}else if(radios[i].value == "tones" && item.targets[1] == "tones"){
+				}else if(radios[i].value == "Tones" && item.targets[1] == "Tones"){
 					radios[i].setAttribute("checked", "checked");
-				}else if(radios[i].value == "objects" && item.targets[1] == "objects"){
+				}else if(radios[i].value == "Objects" && item.targets[1] == "Objects"){
 					radios[i].setAttribute("checked", "checked");
-				}else if(radios[i].value == "mixed" && item.targets[1] == "mixed"){
+				}else if(radios[i].value == "Mixed" && item.targets[1] == "Mixed"){
 					radios[i].setAttribute("checked", "checked");
 				}
 			}
 			if(item.favorite[1] == "Yes"){
-				$("fav").setAttribute("checked", "checked");
+				$("favorite").setAttribute("checked", "checked");
 			}
 		$("courseRating").value = item.courseRating[1];
 		$("comments").value = item.comments[1];
@@ -183,7 +217,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		//remove initial listener from save contact button
 		save.removeEventListener("click", storeData);
 		//change submit button value to say edit
-		$("submit").value = "Edit Contact";
+		$("submit").value = "Edit Review";
 		var editSubmit = $("submit");
 		//save the key value of the editSubmit event
 		editSubmit.addEventListener("click", validate);
@@ -237,14 +271,14 @@ window.addEventListener("DOMContentLoaded", function(){
 		if(getRname.value === ""){
 			var rNameError = "Please enter a Reviewer name.";
 			getRname.style.border = "1px solid red";
-			messageArray.pus(rNameError);
+			messageArray.push(rNameError);
 		}
 		
 		//course name validation
 		if(getCname.value === ""){
 			var cNameError = "Please enter a Course name.";
 			getCname.style.border = "1px solid red";
-			messageArray.pus(cNameError);
+			messageArray.push(cNameError);
 		}
 		
 		//reg exp, didn't have an email field for this.
@@ -270,7 +304,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		}	
 	}
 
-	var parScore = ["--Choose Par--", "Par 3", "Par 4", "Par 5"],
+	var parScore = ["--Choose Par--", "Par3", "Par4", "Par5"],
 		targetsValue
 		favoriteValue = "No"
 		errMsg = $("errors");
